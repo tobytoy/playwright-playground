@@ -1,0 +1,84 @@
+name: "TDX 運輸資料流通服務網站"
+base_url: "https://tdx.transportdata.tw"
+headless: true
+default_timeout_ms: 18000
+viewport:
+  width: 1440
+  height: 900
+
+rules:
+  detect_blank_page: true
+  blank_page_min_text_length: 50
+  blank_page_min_dom_nodes: 25
+  detect_stuck_spinner: true
+  spinner_timeout_seconds: 4.0
+  detect_dev_leaks: true
+  dev_leak_patterns:
+    - "*localhost*"
+    - "*127.0.0.1*"
+    - "*:44331*"
+  detect_api_failures: true
+  api_failure_threshold: 400
+  detect_runtime_errors: true
+  detect_iframe_issues: true
+  capture_screenshots: true
+  full_page_screenshot: false
+
+routes:
+  # 1. 服務查詢頁 (白畫面 / JS 錯誤)
+  - path: "/api-service/inquire"
+    name: "服務查詢頁"
+    custom_wait_ms: 3000
+
+  # 2. 申請記錄頁 (後端 500 / 僅剩標題)
+  - path: "/api-service/ticpApplyTable"
+    name: "申請記錄頁"
+    custom_wait_ms: 3000
+
+  # 3. 主題資料頁 (持續轉圈 / 後端 500)
+  - path: "/api-service/mainData"
+    name: "主題資料頁"
+    custom_wait_ms: 3500
+
+  # 4. 關於 TDX (開發機 localhost 圖片洩漏)
+  - path: "/about/tdx"
+    name: "關於 TDX 頁"
+    custom_wait_ms: 2500
+    forbidden_patterns:
+      - "*localhost*"
+      - "*44331*"
+
+  # 5. 服務狀態監控頁 (iframe UptimeRobot 404)
+  - path: "/api-service/monitor"
+    name: "服務狀態監控頁"
+    check_iframes: true
+    custom_wait_ms: 3000
+
+  # 6. 共用 JS 元件異常之各資料服務頁
+  - path: "/api-service/basic"
+    name: "基礎資料服務頁"
+    custom_wait_ms: 2500
+
+  - path: "/api-service/advanced"
+    name: "進階資料服務頁"
+    custom_wait_ms: 2500
+
+  - path: "/api-service/premium"
+    name: "旗艦資料服務頁"
+    custom_wait_ms: 2500
+
+  - path: "/api-service/historical"
+    name: "歷史資料服務頁"
+    custom_wait_ms: 2500
+
+  - path: "/api-service/cwa"
+    name: "氣象資料服務頁"
+    custom_wait_ms: 2500
+
+  - path: "/api-service/maas"
+    name: "MaaS 服務頁"
+    custom_wait_ms: 2500
+
+  - path: "/api-service/tourism"
+    name: "觀光資料服務頁"
+    custom_wait_ms: 2500

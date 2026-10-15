@@ -1,0 +1,36 @@
+name: "通用網站健康檢查模板"
+base_url: "https://example.com"
+headless: true
+default_timeout_ms: 15000
+viewport:
+  width: 1440
+  height: 900
+
+rules:
+  detect_blank_page: true
+  blank_page_min_text_length: 30
+  blank_page_min_dom_nodes: 20
+  detect_stuck_spinner: true
+  spinner_timeout_seconds: 3.5
+  detect_dev_leaks: true
+  dev_leak_patterns:
+    - "*localhost*"
+    - "*127.0.0.1*"
+    - "*::1*"
+  detect_api_failures: true
+  api_failure_threshold: 400
+  detect_runtime_errors: true
+  detect_iframe_issues: true
+  capture_screenshots: true
+  full_page_screenshot: false
+
+# 欲指定巡檢的關鍵路徑
+routes:
+  - path: "/"
+    name: "首頁"
+    custom_wait_ms: 2000
+
+# 若設為 true，將會自動爬取同源站內超連結至上限
+crawl_enabled: false
+crawl_max_pages: 15
+crawl_max_depth: 2
